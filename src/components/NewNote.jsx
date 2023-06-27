@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import AddIcon from '@mui/icons-material/Add';
+import { Zoom } from '@mui/material';
+import Fab from '@mui/material/Fab';
 
 export default function NewNote(props) {
     const [noteTitle, setNoteTitle] = useState("");
     const [noteDesc, setNoteDesc] = useState("");
+    const [activeComp, setActiveComp] = useState(false);
 
     function handleTitle(event) {
         const text = event.target.value;
@@ -25,10 +29,16 @@ export default function NewNote(props) {
         event.preventDefault();
     }
 
+    function active() {
+        setActiveComp(true);
+    }
+
     return ( 
-    <form onSubmit={submitted}>
-        <input onChange={handleTitle} type="text" placeholder="Title" value={noteTitle}/>
-        <textarea onChange={handleDesc} name="" id="" cols="30" rows="3" placeholder="Take a note..." value={noteDesc}></textarea>
-        <button>Add</button>
+    <form onSubmit={submitted} className="create-note">
+        <input onChange={handleTitle} style={activeComp ? {} : {display: "none"}} type="text" placeholder="Title" value={noteTitle}/>
+        <textarea onChange={handleDesc} onClick={active} name="" id="" cols="30" rows={activeComp ? "3" : "1"} placeholder="Take a note..." value={noteDesc}></textarea>
+        <Zoom in={activeComp ? true : false}>
+            <Fab style={activeComp ? {} : {display: "none"}}><AddIcon/></Fab>
+        </Zoom>
     </form>)
 }
